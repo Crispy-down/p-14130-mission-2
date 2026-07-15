@@ -20,7 +20,7 @@ class QuoteController(private val service: QuoteService) {
     }
 
 
-    fun readList(type: String? = null , word: String? = null) { // 목록
+    fun readList(type: String? = null , word: String? = null, page: Int) { // 목록
         if(type != null && word != null) {
             println("------------------")
             println("검색타입 : ${type}")
@@ -30,16 +30,17 @@ class QuoteController(private val service: QuoteService) {
         println("번호 / 작가 / 명언")
         println("------------------")
 
-        val list = if (type != null && word != null) {
-            service.findAllByKeyword(type,word)
-        }
-        else {
-            service.findAll()
-        }
+        val result = service.findList(type, word, page)
 
-        list.forEach { quote ->
+        result.quotes.forEach { quote ->
             println("${quote.id} / ${quote.author} / ${quote.content}")
         }
+        println("------------------")
+        val pageIndicator = (1..result.totalPages).joinToString(" / ") {
+            p -> if(p == result.currentPage) "[$p]" else "$p"
+        }
+        println("페이지 : $pageIndicator")
+
     }
 
     fun delete(id: Int){ // 삭제

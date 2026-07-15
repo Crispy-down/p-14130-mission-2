@@ -25,7 +25,10 @@ class App(private val controller: QuoteController) {
                 "등록" -> controller.register()
                 "목록" -> {
                     val params = parsingParams(paramString)
-                    controller.readList(params["keywordType"], params["keyword"])
+                    val type = params["keywordType"]
+                    val word = params["keyword"]
+                    val page = params["page"]?.toIntOrNull() ?: 1
+                    controller.readList(type, word, page)
                 }
                 "삭제" -> controller.delete(parsingId(paramString))
                 "수정" -> controller.modify(parsingId(paramString))
