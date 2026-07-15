@@ -13,8 +13,8 @@ class QuoteRepository {
         return quotes.any {it.id == id}
     }
 
-    fun findById(id: Int): Quote {
-        return quotes.first {it.id == id}
+    fun findById(id: Int): Quote? {
+        return quotes.find {it.id == id}
     }
 
     //C
@@ -31,16 +31,16 @@ class QuoteRepository {
     }
 
     //U
-    fun update(id: Int, content: String, author: String): Quote {
-        val target = findById(id)
+    fun update(id: Int, content: String, author: String): Quote? {
+        val target = findById(id) ?: return null
         target.content = content
         target.author = author
         return target
     }
 
     //D
-    fun delete(id: Int): Quote {
-        val target = findById(id)
+    fun delete(id: Int): Quote? {
+        val target = findById(id) ?: return null
         quotes.remove(target)
         return target
     }

@@ -39,21 +39,20 @@ class QuoteController(private val service: QuoteService) {
     }
 
     fun modify(id: Int){
-        if(service.existsById(id)) {
-            val target = service.findById(id)
-
-            println("명언(기존) : ${target.content}")
-            print("명언 : ")
-            val modifyContent = readLine() ?: return
-            println("작가(기존) : ${target.author}")
-            print("작가 : ")
-            val modifyAuthor = readLine() ?: return
-
-            service.modify(id, modifyContent, modifyAuthor)
-        }
-        else {
+        val target = service.findById(id)
+        if(target == null) {
             println("${id}번 명언이 존재하지 않습니다.")
+            return
         }
+
+        println("명언(기존) : ${target.content}")
+        print("명언 : ")
+        val modifyContent = readLine() ?: return
+        println("작가(기존) : ${target.author}")
+        print("작가 : ")
+        val modifyAuthor = readLine() ?: return
+
+        service.modify(id, modifyContent, modifyAuthor)
 
     }
 }

@@ -15,7 +15,7 @@ class QuoteService(private val repository: QuoteRepository) {
         return repository.existsById(id)
     }
 
-    fun findById(id: Int): Quote {
+    fun findById(id: Int): Quote? {
         return repository.findById(id)
     }
 
@@ -23,11 +23,11 @@ class QuoteService(private val repository: QuoteRepository) {
         return repository.findAllByReverse()
     }
 
-    fun deleteById(id: Int): Quote {
+    fun deleteById(id: Int): Quote? {
         return repository.delete(id)
     }
 
-    fun modify(id: Int, content: String , author: String): Quote {
+    fun modify(id: Int, content: String , author: String): Quote? {
         return repository.update(id, content, author)
     }
 }
