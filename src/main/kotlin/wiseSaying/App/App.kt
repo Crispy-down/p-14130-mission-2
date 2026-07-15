@@ -8,7 +8,7 @@ class App(private val controller: QuoteController) {
             print("명령) ")
             val input = readLine() ?: break
 
-            val (cmd, paramString) = if ("?" in input) { // ex) 삭제 , / ? / , id=1
+            val (cmd, paramString) = if ("?" in input) {
                 val (c , p) = input.split("?", limit = 2)
                 c to p
             }
@@ -16,10 +16,17 @@ class App(private val controller: QuoteController) {
                 input to ""
             }
 
+            // ex) 삭제 , / ? / , id=1
+            // ex2) 목록 , / ? / keywordType=content&keyword=과거
+            // ex3) 목록 , / ? / keywordType=author&keyword=작자
+
             when(cmd) {
                 "종료" -> break
                 "등록" -> controller.register()
-                "목록" -> controller.readList()
+                "목록" -> {
+                    val params = parsingParams(paramString)
+                    controller.readList(params["keywordType"], params["keyword"])
+                }
                 "삭제" -> controller.delete(parsingId(paramString))
                 "수정" -> controller.modify(parsingId(paramString))
             }
@@ -29,5 +36,15 @@ class App(private val controller: QuoteController) {
 
     private fun parsingId(str: String): Int {
         return str.split("=")[1].toInt()
+    }
+
+    private fun parsingParams(str: String): Map<String,String> { //
+        if(str.isBlank()) return emptyMap()
+        return str.split("&")
+            .mapNotNull { pair ->
+                val parts = pair.split("=", limit = 2)
+                if(parts.size == 2) parts[0] to parts[1] else null
+            }
+            .toMap()
     }
 }

@@ -11,15 +11,19 @@ class QuoteService(private val repository: QuoteRepository) {
         return repository.save(content,author)
     }
 
-    fun existsById(id: Int): Boolean {
+    fun existsById(id: Int): Boolean { // 존재 여부
         return repository.existsById(id)
     }
 
-    fun findById(id: Int): Quote? {
+    fun findById(id: Int): Quote? { // 존재하는 데이터
         return repository.findById(id)
     }
 
-    fun findAll(): List<Quote> {
+    fun findAllByKeyword(type: String, word: String): List<Quote> { // 검색한 데이터
+        return repository.findAllByKeyword(type,word)
+    }
+
+    fun findAll(): List<Quote> { // 목록 역순 출력
         return repository.findAllByReverse()
     }
 
@@ -30,4 +34,6 @@ class QuoteService(private val repository: QuoteRepository) {
     fun modify(id: Int, content: String , author: String): Quote? {
         return repository.update(id, content, author)
     }
+
+
 }

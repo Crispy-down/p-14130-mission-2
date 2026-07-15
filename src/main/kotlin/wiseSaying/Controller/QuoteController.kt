@@ -19,11 +19,25 @@ class QuoteController(private val service: QuoteService) {
 
     }
 
-    fun readList() { // 목록
+
+    fun readList(type: String? = null , word: String? = null) { // 목록
+        if(type != null && word != null) {
+            println("------------------")
+            println("검색타입 : ${type}")
+            println("검색어 : ${word}")
+        }
+        println("------------------")
         println("번호 / 작가 / 명언")
         println("------------------")
 
-        service.findAll().forEach { quote ->
+        val list = if (type != null && word != null) {
+            service.findAllByKeyword(type,word)
+        }
+        else {
+            service.findAll()
+        }
+
+        list.forEach { quote ->
             println("${quote.id} / ${quote.author} / ${quote.content}")
         }
     }

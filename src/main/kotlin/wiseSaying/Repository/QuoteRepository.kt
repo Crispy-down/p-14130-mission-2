@@ -30,6 +30,16 @@ class QuoteRepository {
         return quotes.sortedByDescending {it.id}
     }
 
+    fun findAllByKeyword(type: String, word: String): List<Quote> {
+        return quotes.filter { quote ->
+            when(type) {
+                "content" -> quote.content.contains(word)
+                "author" -> quote.author.contains(word)
+                else -> false // filter 각 boolean값 반환
+            }
+        }.sortedByDescending { it.id }
+    }
+
     //U
     fun update(id: Int, content: String, author: String): Quote? {
         val target = findById(id) ?: return null
