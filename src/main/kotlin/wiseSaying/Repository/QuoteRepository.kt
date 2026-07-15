@@ -9,8 +9,12 @@ class QuoteRepository {
     private val quotes = mutableListOf<Quote>()
     private var lastId = 0
 
-    fun findById(id: Int): Quote? {
-        return quotes.find {it.id == id}
+    fun existsById(id: Int): Boolean {
+        return quotes.any {it.id == id}
+    }
+
+    fun findById(id: Int): Quote {
+        return quotes.first {it.id == id}
     }
 
     //C
@@ -27,17 +31,18 @@ class QuoteRepository {
     }
 
     //U
-    fun update(id: Int, content: String, author: String): Boolean {
-        val target = findById(id) ?: return false
+    fun update(id: Int, content: String, author: String): Quote {
+        val target = findById(id)
         target.content = content
         target.author = author
-        return true
+        return target
     }
 
     //D
-    fun delete(id: Int): Boolean {
-        val target = findById(id) ?: return false
-        return quotes.remove(target)
+    fun delete(id: Int): Quote {
+        val target = findById(id)
+        quotes.remove(target)
+        return target
     }
 
 }
